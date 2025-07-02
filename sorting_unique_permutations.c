@@ -2,7 +2,7 @@
 Problem: Generate all unique permutations of a given array.
 
 Description:
-Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+Given an array that may contain duplicates, return all possible unique permutations.
 
 Example:
 Input: nums = [1, 1, 2]
@@ -16,7 +16,7 @@ Output:
 #include <stdlib.h>
 #include <stdbool.h>
 
-// Comparison function for qsort
+// Comparison function for sorting
 int compare(const void *a, const void *b) {
     return (*(int*)a - *(int*)b);
 }
@@ -62,7 +62,7 @@ int** permuteUnique(int* nums, int numsSize, int* returnSize, int** returnColumn
     return result;
 }
 
-// Main for testing
+// Main function for local testing
 int main() {
     int nums[] = {1, 1, 2};
     int numsSize = sizeof(nums) / sizeof(nums[0]);
