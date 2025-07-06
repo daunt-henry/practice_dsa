@@ -1,0 +1,58 @@
+// Problem: Kth Largest Sum in a Binary Tree
+
+/*
+You are given the root of a binary tree and an integer k.
+Return the kth largest sum of values of the levels in the tree.
+
+If there are fewer than k levels, return -1.
+
+Example:
+Input: root = [5,8,9,2,1,3,7], k = 2
+Output: 13
+
+Explanation:
+- Level 0 sum = 5
+- Level 1 sum = 8 + 9 = 17
+- Level 2 sum = 2 + 1 + 3 + 7 = 13
+Sorted sums = [17, 13, 5], so 2nd largest is 13.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_LEVELS 100001
+
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+// Depth-first traversal to compute level-wise sums
+void dfs(struct TreeNode* root, int level, long* levelSums) {
+    if (!root) return;
+    levelSums[level] += root->val;
+    dfs(root->left, level + 1, levelSums);
+    dfs(root->right, level + 1, levelSums);
+}
+
+// Custom comparator for descending sort
+int compare(const void* a, const void* b) {
+    long x = *(long*)a;
+    long y = *(long*)b;
+    return (x < y) - (x > y);
+}
+
+// Main function
+long long kthLargestLevelSum(struct TreeNode* root, int k) {
+    long levelSums[MAX_LEVELS] = {0};
+    dfs(root, 0, levelSums);
+
+    int levels = 0;
+    while (levelSums[levels] != 0 || levels == 0) levels++;
+
+    if (k > levels) return -1;
+
+    qsort(levelSums, levels, sizeof(long), compare);
+    return levelSums[k - 1];
+}
