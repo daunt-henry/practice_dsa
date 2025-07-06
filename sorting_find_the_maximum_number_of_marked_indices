@@ -1,0 +1,51 @@
+// Problem: Find the Maximum Number of Marked Indices
+
+/*
+You are given an integer array `nums`. You can perform the following operation any number of times:
+- Choose two *different* indices i and j, where 2 * nums[i] <= nums[j], and mark both i and j.
+
+Return the *maximum* number of indices you can mark in this way.
+
+Example:
+Input: nums = [3,5,2,4]
+Output: 2
+Explanation: We can mark indices 0 and 1 (2*3 <= 5).
+
+Approach:
+- Sort the array.
+- Use two pointers: one from the beginning and one from the middle.
+- Try to form as many valid pairs as possible.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int maxNumOfMarkedIndices(int* nums, int numsSize) {
+    qsort(nums, numsSize, sizeof(int), cmp);
+    int i = 0, j = (numsSize + 1) / 2, count = 0;
+    
+    while (i < (numsSize + 1) / 2 && j < numsSize) {
+        if (nums[i] * 2 <= nums[j]) {
+            count += 2;
+            i++;
+            j++;
+        } else {
+            j++;
+        }
+    }
+    
+    return count;
+}
+
+// Sample test
+int main() {
+    int nums[] = {3, 5, 2, 4};
+    int size = sizeof(nums) / sizeof(nums[0]);
+    int result = maxNumOfMarkedIndices(nums, size);
+    printf("Output: %d\n", result);  // Expected Output: 2
+    return 0;
+}
