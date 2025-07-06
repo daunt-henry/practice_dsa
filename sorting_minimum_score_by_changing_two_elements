@@ -1,0 +1,46 @@
+// Problem: Minimum Score by Changing Two Elements
+/*
+You are given an integer array `nums` of size >= 3.
+You are allowed to change any two elements to any value.
+Return the minimum possible difference between the maximum and minimum elements after exactly two modifications.
+
+Example:
+Input: nums = [1,5,0,10,14]
+Output: 1
+Explanation: Change 10 and 14 to 1 and 5 → array becomes [1,5,0,1,5], max - min = 5 - 0 = 5.
+Best case: [1,0,0,1,1] → max - min = 1
+
+Try 3 possible scenarios:
+- Change two smallest values
+- Change two largest values
+- Change one smallest and one largest
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int minimizeSum(int* nums, int numsSize) {
+    qsort(nums, numsSize, sizeof(int), cmp);
+    
+    int option1 = nums[numsSize - 1] - nums[2];     // Change two smallest
+    int option2 = nums[numsSize - 3] - nums[0];     // Change two largest
+    int option3 = nums[numsSize - 2] - nums[1];     // Change one smallest and one largest
+
+    int min = option1;
+    if (option2 < min) min = option2;
+    if (option3 < min) min = option3;
+    return min;
+}
+
+// Sample test
+int main() {
+    int nums[] = {1, 5, 0, 10, 14};
+    int size = sizeof(nums) / sizeof(nums[0]);
+    int result = minimizeSum(nums, size);
+    printf("Output: %d\n", result);  // Expected Output: 1
+    return 0;
+}
