@@ -1,0 +1,47 @@
+/*
+Problem:
+You are given an integer array `nums` of size n, where each student has a number representing how many students
+they will be happy to be behind in line. Return the number of ways to reorder the students to make all of them happy.
+
+A student is happy if the number of students in front of them is strictly greater than the number they specify.
+
+Example Input:
+nums = [1, 1]
+
+Expected Output:
+Number of valid ways: 2
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void* a, const void* b) {
+    return (*(int*)a) - (*(int*)b);
+}
+
+int countWays(int* nums, int numsSize) {
+    qsort(nums, numsSize, sizeof(int), cmp);
+    int ways = 0;
+
+    if (nums[0] > 0) ways++;
+
+    for (int i = 0; i < numsSize - 1; ++i) {
+        if (nums[i] <= i && nums[i + 1] > i + 1)
+            ways++;
+    }
+
+    if (nums[numsSize - 1] <= numsSize - 1)
+        ways++;
+
+    return ways;
+}
+
+int main() {
+    int nums[] = {1, 1};
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+
+    int result = countWays(nums, numsSize);
+    printf("Number of valid ways: %d\n", result);
+
+    return 0;
+}
