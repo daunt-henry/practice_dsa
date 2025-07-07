@@ -1,0 +1,66 @@
+/*
+Problem:
+You are given a grid with `n` rows and `m` columns.
+You are also given a list of removed horizontal bars (`hBars`) and vertical bars (`vBars`).
+Bars are indexed from 1 to n-1 and 1 to m-1 respectively.
+
+Each removed horizontal bar allows merging two vertically adjacent cells.
+Each removed vertical bar allows merging two horizontally adjacent cells.
+
+Determine the **maximum area** of a square hole that can be formed by such merges.
+
+Example Input:
+n = 3, m = 3
+hBars = [2]
+vBars = [2]
+
+Expected Output:
+4 (since a 2x2 square hole can be formed)
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void* a, const void* b) {
+    return (*(int*)a) - (*(int*)b);
+}
+
+int maximizeSquareHoleArea(int n, int m, int* hBars, int hSize, int* vBars, int vSize) {
+    qsort(hBars, hSize, sizeof(int), cmp);
+    qsort(vBars, vSize, sizeof(int), cmp);
+
+    int maxH = 1, maxV = 1, curr = 1;
+
+    for (int i = 1; i < hSize; i++) {
+        if (hBars[i] == hBars[i - 1] + 1) {
+            curr++;
+            if (curr > maxH) maxH = curr;
+        } else {
+            curr = 1;
+        }
+    }
+
+    curr = 1;
+    for (int i = 1; i < vSize; i++) {
+        if (vBars[i] == vBars[i - 1] + 1) {
+            curr++;
+            if (curr > maxV) maxV = curr;
+        } else {
+            curr = 1;
+        }
+    }
+
+    int side = (maxH < maxV ? maxH : maxV) + 1;
+    return side * side;
+}
+
+int main() {
+    int hBars[] = {2};
+    int vBars[] = {2};
+    int n = 3, m = 3;
+
+    int area = maximizeSquareHoleArea(n, m, hBars, 1, vBars, 1);
+    printf("Maximum square hole area: %d\n", area);
+
+    return 0;
+}
